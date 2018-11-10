@@ -10,12 +10,8 @@ OPCodes Required
 - C_RECV_PARCEL
 - S_RECV_PARCEL
 */
-const Command = require('command');
-
 module.exports = function ParcelHelper(dispatch) {
-        
-    const command = Command(dispatch);
-    
+           
     /* 
         States 
     */
@@ -30,15 +26,15 @@ module.exports = function ParcelHelper(dispatch) {
     /* 
         Chat hooks
     */
-    command.add('getmail', (arg1) => {
+    dispatch.command.add('getmail', (arg1) => {
         startProcedure(PreparingParcels);
     });
     
-    command.add('deletemail', (arg1) => {
+    dispatch.command.add('deletemail', (arg1) => {
         startProcedure(PreparingDeletion)
     });
     
-    command.add('delmail', (arg1) => {
+    dispatch.command.add('delmail', (arg1) => {
         startProcedure(PreparingDeletion)
     });
     
@@ -86,7 +82,7 @@ module.exports = function ParcelHelper(dispatch) {
                         });
                     }
                     else {
-                        command.message('(parcel-helper) No messages to delete');
+                        dispatch.command.message('(parcel-helper) No messages to delete');
                     }
                     state = Idle;
                 
@@ -111,7 +107,7 @@ module.exports = function ParcelHelper(dispatch) {
                         requestContract();
                     }
                     else {
-                        command.message('(parcel-helper) No parcels to claim');
+                        dispatch.command.message('(parcel-helper) No parcels to claim');
                         state = Idle;
                     }
                 }

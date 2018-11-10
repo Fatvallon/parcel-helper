@@ -1,17 +1,18 @@
 {
-  "files": {
-    "index.js": "caceac81dce1930dd4f728c1e193df5eb2a440408767d09b06718fe47cecab08",
-    "module.json": "fc0cd7f4dfa7ed43cdb66bb5e47a26801317601f38c52c5605d7ea167c73a584"
-  },
-  "defs": {
-    "C_LIST_PARCEL": 2,
-    "S_LIST_PARCEL_EX": 1,
-    "C_DELETE_PARCEL": 2,
-    "C_REQUEST_CONTRACT": 1,
-    "S_REPLY_REQUEST_CONTRACT": 1,
-    "C_SHOW_PARCEL_MESSAGE": 1,
-    "S_PARCEL_READ_RECV_STATUS": 2,
-    "C_RECV_PARCEL": 1,
-    "S_RECV_PARCEL": 2
-  }
+	"files": {
+		"README.md": "a5c3da54ae2ae4ca14f50e508f247af3c053c3fe2a3e114d22d2610cc101bbe7",
+		"index.js": "b66fe3197a3c8973a4f6077ea1986b7016a174a7f4f6ae11c352ef3cf108f1b0",
+		"module.json": "cf26b8b70328affa5041131abda150a8c6b3e67b73bf1cabafd55637d966d671"
+	},
+	"defs": {
+		"C_DELETE_PARCEL": 2,
+		"C_LIST_PARCEL": 2,
+		"C_RECV_PARCEL": 1,
+		"C_REQUEST_CONTRACT": 1,
+		"C_SHOW_PARCEL_MESSAGE": 1,
+		"S_LIST_PARCEL_EX": 1,
+		"S_PARCEL_READ_RECV_STATUS": 2,
+		"S_RECV_PARCEL": 2,
+		"S_REPLY_REQUEST_CONTRACT": 1
+	}
 }

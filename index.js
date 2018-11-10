@@ -10,7 +10,7 @@ OPCodes Required
 - C_RECV_PARCEL
 - S_RECV_PARCEL
 */
-module.exports = function ParcelHelper(dispatch) {
+module.exports = function ParcelHelper(mod) {
            
     /* 
         States 
@@ -26,15 +26,15 @@ module.exports = function ParcelHelper(dispatch) {
     /* 
         Chat hooks
     */
-    dispatch.command.add('getmail', (arg1) => {
+    mod.command.add('getmail', (arg1) => {
         startProcedure(PreparingParcels);
     });
     
-    dispatch.command.add('deletemail', (arg1) => {
+    mod.command.add('deletemail', (arg1) => {
         startProcedure(PreparingDeletion)
     });
     
-    dispatch.command.add('delmail', (arg1) => {
+    mod.command.add('delmail', (arg1) => {
         startProcedure(PreparingDeletion)
     });
     
@@ -52,14 +52,14 @@ module.exports = function ParcelHelper(dispatch) {
     }
     
     function checkMail(pageIndex) {
-        dispatch.toServer('C_LIST_PARCEL', 2, {
+        mod.toServer('C_LIST_PARCEL', 2, {
             unk1: 0,
             page: pageIndex,
             filter: 0
         });
     }
     
-    dispatch.hook('S_LIST_PARCEL_EX', 1, (event) => {
+    mod.hook('S_LIST_PARCEL_EX', 1, (event) => {
         
         switch (state) {
             case PreparingDeletion:
@@ -77,12 +77,12 @@ module.exports = function ParcelHelper(dispatch) {
                 else {
                     // no more pages to check, try deleting now
                     if (messageIds.length > 0) {
-                        dispatch.toServer('C_DELETE_PARCEL', 2, {
+                        mod.toServer('C_DELETE_PARCEL', 2, {
                             messages: messageIds
                         });
                     }
                     else {
-                        dispatch.command.message('(parcel-helper) No messages to delete');
+                        mod.command.message('(parcel-helper) No messages to delete');
                     }
                     state = Idle;
                 
@@ -107,7 +107,7 @@ module.exports = function ParcelHelper(dispatch) {
                         requestContract();
                     }
                     else {
-                        dispatch.command.message('(parcel-helper) No parcels to claim');
+                        mod.command.message('(parcel-helper) No parcels to claim');
                         state = Idle;
                     }
                 }
@@ -130,12 +130,12 @@ module.exports = function ParcelHelper(dispatch) {
     */
         
     function requestContract() {
-        dispatch.toServer('C_REQUEST_CONTRACT', 1, {
+        mod.toServer('C_REQUEST_CONTRACT', 1, {
             type: 8
         });
     }
     
-    dispatch.hook('S_REPLY_REQUEST_CONTRACT', 1, (event) => {
+    mod.hook('S_REPLY_REQUEST_CONTRACT', 1, (event) => {
         if (state == ClaimingParcels) {
             readParcel();
         }
@@ -155,7 +155,7 @@ module.exports = function ParcelHelper(dispatch) {
     function readParcel() {
         if (messageIds.length > 0) {
             queuedParcel = messageIds[messageIds.length-1].id;
-            dispatch.toServer('C_SHOW_PARCEL_MESSAGE', 1, {
+            mod.toServer('C_SHOW_PARCEL_MESSAGE', 1, {
                 id: messageIds[messageIds.length-1].id
             });
         }
@@ -164,7 +164,7 @@ module.exports = function ParcelHelper(dispatch) {
         }
     }
 
-    dispatch.hook('S_PARCEL_READ_RECV_STATUS', 2, (event) => {
+    mod.hook('S_PARCEL_READ_RECV_STATUS', 2, (event) => {
         if (state == ClaimingParcels ) {
             if (queuedParcel != 0 && queuedParcel == messageIds[messageIds.length-1].id) {
                 queuedParcel = 0;
@@ -175,13 +175,13 @@ module.exports = function ParcelHelper(dispatch) {
     
     function claimParcel() {
         if (messageIds.length > 0) {
-            dispatch.toServer('C_RECV_PARCEL', 1, {
+            mod.toServer('C_RECV_PARCEL', 1, {
                 id: messageIds[messageIds.length-1].id
             });
         }
     }
     
-    dispatch.hook('S_RECV_PARCEL', 2, (event) => {
+    mod.hook('S_RECV_PARCEL', 2, (event) => {
         if (state == ClaimingParcels) {
             if (messageIds.length > 0) {
                 messageIds.pop();
